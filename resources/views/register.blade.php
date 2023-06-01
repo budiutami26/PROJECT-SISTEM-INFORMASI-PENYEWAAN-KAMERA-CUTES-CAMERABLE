@@ -19,6 +19,10 @@
             @endif
             <form action="{{ route('actionregister') }}" method="post">
             @csrf
+            <div class="form-group">
+                    <label>NIK</label>
+                    <input type="text" name="nik" class="form-control" placeholder="NIK" required="">
+                </div>
                 <div class="form-group">
                     <label>Nama Lengkap</label>
                     <input type="text" name="nama" class="form-control" placeholder="Nama Lengkap" required="">
@@ -28,25 +32,48 @@
                     <input type="text" name="alamat" class="form-control" placeholder="Alamat" required="">
                 </div>
                 <div class="form-group">
-                    <label>NIK</label>
-                    <input type="text" name="nik" class="form-control" placeholder="NIK" required="">
-                </div>
-                <div class="form-group">
                     <label>Nomor Handphone</label>
                     <input type="text" name="nohp" class="form-control" placeholder="Nomor Handphone" required="">
                 </div>
                 <div class="form-group">
-                    <label>Alamat Email</label>
+                    <label>Email</label>
                     <input type="email" name="email" class="form-control" placeholder="email" required="">
-                </div>
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" name="username" class="form-control" placeholder="username" required="">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" name="password" class="form-control" placeholder="Password" required="">
                 </div>
+                <div class=" form-group">
+                    <label for="fotobersamaid" class="form-label">Foto Bersama Identitas</label>
+                    <input class="form-control" type="file" id="fotobersamaid">
+                  </div>
+                {{-- <div class="form-group">
+                    <label>Foto Bersama Identitas</label>
+                    <input type="text" name="fotobersamaid" class="form-control" placeholder="Foto Bersama Identitas" required="">
+                </div> --}}
+                {{-- <div class="form-group">
+                    <label>Foto Identitas</label>
+                    <input type="text" name="fotoid" class="form-control" placeholder="Foto Identitas" required="">
+                </div> --}}
+                <div class=" form-group">
+                    <label for="fotoid" class="form-label">Foto Identitas</label>
+                    <input class="form-control" type="file" id="fotoid">
+                  </div>
+                  <div class=" form-group">
+                    <label for="jenisid" class="form-label">Jenis Identitas</label>
+                    <select class="form-select" id="jenisid" name="jenisid"
+                        value="{{ Session::get('jenisid') }}">
+                        <option selected disabled value>Pilih Jenis Identitas</option>
+                        <option value="1">KTP</option>
+                        <option value="2">KK</option>
+                        <option value="3">KARTU PELAJAR/MAHASISWA</option>
+                        <option value="4">SIM</option>
+                    </select>
+                </div>
+                {{-- <div class="form-group">
+                    <label>Jenis Identitas</label>
+                    <input type="text" name="jenisid" class="form-control" placeholder="Jenis Identitas" required="">
+                </div> --}}
                 <button type="submit" class="btn btn-primary btn-block">Daftar</button>
                 <hr>
                 <p class="text-center">Sudah punya akun? <a href="/">Login</a></p>

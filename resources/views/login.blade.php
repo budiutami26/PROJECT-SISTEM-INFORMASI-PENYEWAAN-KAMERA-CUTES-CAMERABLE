@@ -20,15 +20,16 @@
             <form action="{{ route('actionlogin') }}" method="post">
             @csrf
                 <div class="form-group">
-                    <label>Username</label>
-                    <input type="username" name="username" class="form-control" placeholder="Username" required="">
+                    <label>Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="Email" required="">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" name="password" class="form-control" placeholder="Password" required="">
                 </div>
                 <p class="text-right"><a href="#">Lupa password?</a></p>
-                <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+                <a href="/dashboard">
+                <button type="submit" class="btn btn-primary btn-block">Masuk</button></a>
                 <hr>
                 <p class="text-center">Belum punya akun? <a href="/register">Daftar sekarang</a></p>
             </form>
