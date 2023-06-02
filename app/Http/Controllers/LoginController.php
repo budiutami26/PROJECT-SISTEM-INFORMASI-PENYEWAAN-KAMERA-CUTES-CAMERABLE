@@ -56,25 +56,45 @@ class LoginController extends Controller
 
     public function actionregister(Request $request)
     {
-        
 
-        $user = User::create([
-            'nama' => $request->nama,
-            'alamat' => $request->alamat,
-            'nik' => $request->nik,
-            'nohp' => $request->nohp,
-            'email' => $request->email,
-            'fotobersamaid' => $request->fotobersamaid,
-            'fotoid' => $request->fotoid,
-            'jenisid' => $request->jenisid,
-            'password' => $request->password,
-            // 'role' => $request->role,
-            'active' => 1
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'alamat' => 'required',
+            'nik' => 'required',
+            'nohp' => 'required',
+            'email' => 'required',
+            'fotobersamaid' => 'image|mimes:jpeg,png,jpg|max:2048', // validasi untuk tipe file gambar
+            'fotoid' => 'image|mimes:jpeg,png,jpg|max:2048', // validasi untuk tipe file gambar
+            'jenisid' => 'required',
+            'password' => 'required',
+            'active' => 'required',
         ]);
 
-        
-        Session::flash('message', 'Register Berhasil. Akun Anda sudah Aktif silahkan Login menggunakan username dan password.');
+        $user = new User();
+        $user->nama = $request->nama;
+        $user->alamat = $request->alamat;
+        $user->nik = $request->nik;
+        $user->nohp = $request->nohp;
+        $user->email = $request->email;
+        $user->jenisid = $request->jenisid;
+        // $user->role = 1; // isi dengan role nya
+        $user->password = Hash::make($request->password);
+        $user->active = $request->active;
+
+        if ($request->hasFile('fotobersamaid')) {
+            $image = $request->file('image');
+            $imagePath = $image->store('public/images'); // simpan gambar di folder storage/app/public/images
+            $user->fotobersamaid = basename($imagePath); // simpan nama file gambar ke dalam kolom 'image'
+        }
+
+        if ($request->hasFile('fotoid')) {
+            $image = $request->file('image');
+            $imagePath = $image->store('public/images'); // simpan gambar di folder storage/app/public/images
+            $user->fotoid = basename($imagePath); // simpan nama file gambar ke dalam kolom 'image'
+        }
+        $user->save();
+        session::flash('success', 'Data berhasil ditambahkan');
+
         return redirect('/');
     }
-
 }

@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->string('nama');
             $table->string('nohp');
             $table->string('alamat');
-            $table->text('fotobersamaid')->default('-'); //biar isinya default dari sistem
-            $table->text('fotoid')->default('-');
+            $table->string('fotobersamaid');
+            $table->string('fotoid');
             $table->enum('jenisid',['KTP','KK','KARTU PELAJAR/MAHASISWA','SIM']);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

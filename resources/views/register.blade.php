@@ -17,7 +17,7 @@
                 <b>Opps!</b> {{session('error')}}
             </div>
             @endif
-            <form action="{{ route('actionregister') }}" method="post">
+            <form action="{{ route('actionregister') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                     <label>NIK</label>
@@ -64,10 +64,10 @@
                     <select class="form-select" id="jenisid" name="jenisid"
                         value="{{ Session::get('jenisid') }}">
                         <option selected disabled value>Pilih Jenis Identitas</option>
-                        <option value="1">KTP</option>
-                        <option value="2">KK</option>
-                        <option value="3">KARTU PELAJAR/MAHASISWA</option>
-                        <option value="4">SIM</option>
+                        <option value="KTP">KTP</option>
+                        <option value="KK">KK</option>
+                        <option value="KARTU PELAJAR/MAHASISWA">KARTU PELAJAR/MAHASISWA</option>
+                        <option value="SIM">SIM</option>
                     </select>
                 </div>
                 {{-- <div class="form-group">
