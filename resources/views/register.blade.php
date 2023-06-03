@@ -17,47 +17,39 @@
                 <b>Opps!</b> {{session('error')}}
             </div>
             @endif
-            <form action="{{ route('actionregister') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('actionregister') }}" method="post" enctype="multipart/form-data"> 
             @csrf
             <div class="form-group">
                     <label>NIK</label>
-                    <input type="text" name="nik" class="form-control" placeholder="NIK" required="">
+                    <input type="text" name="nik" class="form-control" placeholder="NIK" required>
                 </div>
                 <div class="form-group">
                     <label>Nama Lengkap</label>
-                    <input type="text" name="nama" class="form-control" placeholder="Nama Lengkap" required="">
+                    <input type="text" name="nama" class="form-control" placeholder="Nama Lengkap" required value="{{ old('nama') }}">
                 </div>
                 <div class="form-group">
                     <label>Alamat</label>
-                    <input type="text" name="alamat" class="form-control" placeholder="Alamat" required="">
+                    <input type="text" name="alamat" class="form-control" placeholder="Alamat" required value="{{ old('alamat') }}">
                 </div>
                 <div class="form-group">
                     <label>Nomor Handphone</label>
-                    <input type="text" name="nohp" class="form-control" placeholder="Nomor Handphone" required="">
+                    <input type="text" name="nohp" class="form-control" placeholder="Nomor Handphone" required value="{{ old('nohp') }}">
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" name="email" class="form-control" placeholder="email" required="">
+                    <input type="email" name="email" class="form-control" placeholder="email" required value="{{ old('email') }}">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="Password" required="">
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
                 </div>
                 <div class=" form-group">
                     <label for="fotobersamaid" class="form-label">Foto Bersama Identitas</label>
-                    <input class="form-control" type="file" id="fotobersamaid">
+                    <input class="form-control" type="file" name="fotobersamaid" id="fotobersamaid" required>
                   </div>
-                {{-- <div class="form-group">
-                    <label>Foto Bersama Identitas</label>
-                    <input type="text" name="fotobersamaid" class="form-control" placeholder="Foto Bersama Identitas" required="">
-                </div> --}}
-                {{-- <div class="form-group">
-                    <label>Foto Identitas</label>
-                    <input type="text" name="fotoid" class="form-control" placeholder="Foto Identitas" required="">
-                </div> --}}
                 <div class=" form-group">
                     <label for="fotoid" class="form-label">Foto Identitas</label>
-                    <input class="form-control" type="file" id="fotoid">
+                    <input class="form-control" type="file" name="fotoid" id="fotoid" required>
                   </div>
                   <div class=" form-group">
                     <label for="jenisid" class="form-label">Jenis Identitas</label>
@@ -70,10 +62,6 @@
                         <option value="SIM">SIM</option>
                     </select>
                 </div>
-                {{-- <div class="form-group">
-                    <label>Jenis Identitas</label>
-                    <input type="text" name="jenisid" class="form-control" placeholder="Jenis Identitas" required="">
-                </div> --}}
                 <button type="submit" class="btn btn-primary btn-block">Daftar</button>
                 <hr>
                 <p class="text-center">Sudah punya akun? <a href="/">Login</a></p>

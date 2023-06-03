@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator; //memanggil fungsi validator
+use Illuminate\Support\Facades\Hash;  //untuk membaca password hash
+use Carbon\Carbon; //membaca class carbon
 use Session;
 
 class LoginController extends Controller
@@ -49,26 +52,41 @@ class LoginController extends Controller
         return view('register');
     }
 
-    // $data = [
-    //     'email' => $request->input('email'),
-    //     'password' => $request->input('password'),
-    // ];
-
     public function actionregister(Request $request)
     {
 
-        $validatedData = $request->validate([
+        $validatedData = Validator::make($request->all(),[
             'nama' => 'required',
             'alamat' => 'required',
-            'nik' => 'required',
+            'nik' => 'required|unique:users',
             'nohp' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:users',
             'fotobersamaid' => 'image|mimes:jpeg,png,jpg|max:2048', // validasi untuk tipe file gambar
             'fotoid' => 'image|mimes:jpeg,png,jpg|max:2048', // validasi untuk tipe file gambar
             'jenisid' => 'required',
             'password' => 'required',
-            'active' => 'required',
+        ],[
+            'nama.required' => 'Nama harus diisi.',
+            'alamat.required' => 'Alamat harus diisi.',
+            'nik.required' => 'NIK harus diisi.',
+            'nik.unique' => 'NIK sudah pernah mendaftar.',
+            'nohp.required' => 'Nomor HP harus diisi.',
+            'email.required' => 'Email harus diisi.',
+            'email.unique' => 'Email sudah digunakan.',
+            'fotobersamaid.image' => 'Foto bersama ID harus berupa gambar.',
+            'fotobersamaid.mimes' => 'Foto bersama ID harus dalam format jpeg, png, atau jpg.',
+            'fotobersamaid.max' => 'Ukuran foto bersama ID tidak boleh melebihi 2MB.',
+            'fotoid.image' => 'Foto ID harus berupa gambar.',
+            'fotoid.mimes' => 'Foto ID harus dalam format jpeg, png, atau jpg.',
+            'fotoid.max' => 'Ukuran foto ID tidak boleh melebihi 2MB.',
+            'jenisid.required' => 'Jenis ID harus diisi.',
+            'password.required' => 'Password harus diisi.',
         ]);
+
+        if($validatedData->fails()){
+            session::flash('error', $validatedData->messages()->first());
+            return redirect()->back()->withInput();
+        }
 
         $user = new User();
         $user->nama = $request->nama;
@@ -79,22 +97,24 @@ class LoginController extends Controller
         $user->jenisid = $request->jenisid;
         // $user->role = 1; // isi dengan role nya
         $user->password = Hash::make($request->password);
-        $user->active = $request->active;
-
-        if ($request->hasFile('fotobersamaid')) {
-            $image = $request->file('image');
-            $imagePath = $image->store('public/images'); // simpan gambar di folder storage/app/public/images
-            $user->fotobersamaid = basename($imagePath); // simpan nama file gambar ke dalam kolom 'image'
-        }
 
         if ($request->hasFile('fotoid')) {
-            $image = $request->file('image');
-            $imagePath = $image->store('public/images'); // simpan gambar di folder storage/app/public/images
-            $user->fotoid = basename($imagePath); // simpan nama file gambar ke dalam kolom 'image'
+            $file = $request->file('fotoid');
+            $fileName = $request['nama'] . Carbon::now()->locale('id')->translatedFormat('dHis') .'.'. $file->getClientOriginalExtension();
+            $imagePath = $file->storeAs('public/images', $fileName); // simpan gambar di folder storage/app/public/images
         }
+        $user->fotoid = basename($imagePath);
+
+        if ($request->hasFile('fotobersamaid')) {
+            $file = $request->file('fotobersamaid');
+            $fileName = $request['nama'] . Carbon::now()->locale('id')->translatedFormat('dHis') . $file->getClientOriginalExtension(); //fungsi carbon untuk memanipulasi tanggal/jam 
+            $filePathid = $file->storeAs('public/images', $fileName); // simpan gambar di folder storage/app/public/images
+        }
+        $user->fotobersamaid = basename($filePathid);
+
         $user->save();
         session::flash('success', 'Data berhasil ditambahkan');
 
-        return redirect('/');
+        return redirect('/'); // jika registrasi berhasil akan diarahkan ke halaman login
     }
 }
